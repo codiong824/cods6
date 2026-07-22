@@ -1,0 +1,39 @@
+plugins {
+    id 'java'
+    // 26.1+ (비난독화 버전)용 Loom 플러그인. 1.21.11 이하(난독화 버전)용이면
+    // 'net.fabricmc.fabric-loom-remap' 을 써야 합니다 — 서버가 26.1.2이므로 이걸 씁니다.
+    //
+    // 주의: plugins{} 블록은 버전 값으로 리터럴 문자열이나 "${...}" 프로퍼티 치환만 허용하고
+    // project.loom_version 같은 일반 참조는 허용하지 않는다 (Gradle DSL 제약).
+    id 'net.fabricmc.fabric-loom' version "${loom_version}"
+}
+
+version = project.mod_version
+group = project.maven_group
+
+repositories {
+    maven { url = "https://maven.fabricmc.net/" }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    // 비난독화 버전이라 mappings 줄 자체가 없습니다 (Mojang 공식 이름을 그대로 씀).
+    // 26.1+ 에서는 modImplementation이 아니라 그냥 implementation을 써야 합니다
+    // (mod 접두사는 "리매핑이 필요한 의존성"이라는 뜻인데, 비난독화 버전은 리매핑 자체가 없음).
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+}
+
+java {
+    toolchain {
+        // 마인크래프트 26.1.2 자체가 JDK 25로 빌드되어 있어서 그보다 낮은 JDK로는 안 됩니다.
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+    withSourcesJar()
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+}
+
+// 비난독화 버전이라 remapJar가 아니라 그냥 jar 태스크가 최종 산출물입니다.

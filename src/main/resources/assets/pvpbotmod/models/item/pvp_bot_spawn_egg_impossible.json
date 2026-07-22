@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "pvpbotmod:item/pvp_bot_spawn_egg_impossible"
+  }
+}

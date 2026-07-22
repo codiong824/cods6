@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "pvpbotmod",
+  "version": "${version}",
+  "name": "PvPBot Mod",
+  "description": "사람처럼 PvP 하는 커스텀 몹 모드 (Fabric)",
+  "authors": ["you"],
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.example.pvpbotmod.PvpBotMod"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.18.0",
+    "minecraft": "~26.1",
+    "fabric-api": "*"
+  }
+}
